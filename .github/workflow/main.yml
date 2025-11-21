@@ -1,0 +1,47 @@
+name: CI - Unity Build
+
+on:
+  workflow_dispatch:      # permite lanzarlo manualmente
+
+jobs:
+  build-windows:
+    name: Build Windows Standalone
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # (Opcional) cache de la carpeta Library para builds más rápidos
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: ${{ runner.os }}-unity-library-${{ hashFiles('**/ProjectSettings/ProjectVersion.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-unity-library-
+
+      - name: Unity Builder
+        uses: game-ci/unity-builder@v4
+        id: unity_build
+        env:
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}       # si usas licencia personal activada
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}         # si usas Pro (opcional)
+        with:
+          targetPlatform: StandaloneWindows64
+          unityVersion: auto         # usa ProjectVersion.txt del proyecto
+          buildsPath: build
+          buildName: Girotronica-Win
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Girotronica-Windows-Build
+          path: build/**
+
+      - name: Build info
+        run: |
+          echo "Build version: ${{ steps.unity_build.outputs.buildVersion }}"
+          echo "Engine exit code: ${{ steps.unity_build.outputs.engineExitCode }}"

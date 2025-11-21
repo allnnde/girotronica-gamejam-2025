@@ -30,7 +30,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}       # si usas licencia personal activada
         with:
           targetPlatform: StandaloneWindows64
-          unityVersion: editor-windows-6000.2.10f1-windows-il2cpp-3.2.0         # usa ProjectVersion.txt del proyecto
+          unityVersion: 6000.2.10f1        # usa ProjectVersion.txt del proyecto
           buildsPath: build
           buildName: Girotronica-Win
 

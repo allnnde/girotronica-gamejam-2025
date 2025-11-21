@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-public interface IPowerup
+public interface IPowerUp
 {
     void Action();
 }

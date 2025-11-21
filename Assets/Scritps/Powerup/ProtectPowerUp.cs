@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Assets.Scritps;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
 
-    public class ProtectPowerUp : MonoBehaviour, IPowerup
+    public class ProtectPowerUp : MonoBehaviour, IPowerUp
     {
         public void Action()
     {
         Debug.Log("ProtectPowerUp Action");
     }
-    }
+}
 

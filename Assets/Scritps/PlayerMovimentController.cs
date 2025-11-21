@@ -26,8 +26,13 @@ public class PlayerMovimentController : MonoBehaviour
 
     void Update()
     {
-        Vector2 input = _moveAction.ReadValue<Vector2>();
+        Move(_jumpAction.triggered, JumpForce);
+    }
 
+    public void Move(bool jump, float jumpForce)
+    {
+
+        Vector2 input = _moveAction.ReadValue<Vector2>();
         // Rotación horizontal (izquierda/derecha)
         float turn = input.x;
         if (Mathf.Abs(turn) > 0.01f)
@@ -53,9 +58,9 @@ public class PlayerMovimentController : MonoBehaviour
                 _playerVelocity = -2f;
 
             // Input de salto
-            if (_jumpAction.triggered)
+            if (jump)
             {
-                _playerVelocity = JumpForce;
+                _playerVelocity = jumpForce;
             }
         }
 
@@ -63,7 +68,6 @@ public class PlayerMovimentController : MonoBehaviour
         _playerVelocity += GravityForce * Time.deltaTime;
 
         move.y = _playerVelocity;
-
         _characterController.Move(move * Time.deltaTime);
     }
 }

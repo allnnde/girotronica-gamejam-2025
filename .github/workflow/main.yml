@@ -28,7 +28,6 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}       # si usas licencia personal activada
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}         # si usas Pro (opcional)
         with:
           targetPlatform: StandaloneWindows64
           unityVersion: auto         # usa ProjectVersion.txt del proyecto

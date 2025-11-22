@@ -10,7 +10,7 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
 {
 
     private PlayerMovimentController cc;
-    private Image iamge;
+    private Image image;
 
     [field: SerializeField] public float Dutation { get; set; } = 4F;
 
@@ -26,7 +26,7 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
         cc = GetComponent<PlayerMovimentController>();
 
         var ui = GameObject.Find("UI");
-        iamge = ui.transform.Find("ProtectedPanel").GetComponent<Image>();
+        image = ui.transform.Find("ProtectedPanel").GetComponent<Image>();
     }
 
     private void Update()
@@ -41,16 +41,25 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
             }
             var alpha = CalculateAlpha(_timeCounter);
 
-            iamge.color = new Color(iamge.color.r, iamge.color.g, iamge.color.b, alpha);
+            image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
 
             _timeCounter += Time.deltaTime;
         }
     }
 
-    public float CalculateAlpha(float x) {
+    public float CalculateAlpha(float t)
+    {
+        float rise = Dutation * 0.25f;   // 25% subir
+        float hold = Dutation * 0.50f;   // 50% mantener negro
+        float fall = Dutation * 0.25f;   // 25% bajar
 
-        return -Mathf.Pow(x, 2) + Dutation * x;
-    
+        if (t < rise)
+            return Mathf.Lerp(0, 1, t / rise);         // subida
+
+        if (t < rise + hold)
+            return 1f;                                 // mantener negro
+
+        return Mathf.Lerp(1, 0, (t - (rise + hold)) / fall); // bajada
     }
 }
 

@@ -31,6 +31,7 @@ public class PlayerMovimentController : MonoBehaviour
     void Update()
     {
 
+        _anim.SetBool("IsGrounded", _characterController.isGrounded);
         if (MoveMode == MoveModeEnum.Walk)
             Move(_jumpAction.triggered, JumpForce, GravityForce);
     }
@@ -57,7 +58,9 @@ public class PlayerMovimentController : MonoBehaviour
             move = transform.forward * forward * MoveSpeed;
         }
         _anim.SetBool("IsWalking", isWalking);
-        _anim.SetBool("IsJumping",  !_characterController.isGrounded);
+        _anim.SetBool("IsJumping", !_characterController.isGrounded);
+
+        
 
         // --- SALTO ---
         if (_characterController.isGrounded)

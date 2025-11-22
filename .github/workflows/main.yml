@@ -1,12 +1,12 @@
 name: CI - Unity Build
 
 on:
-  workflow_dispatch:      # permite lanzarlo manualmente
+  workflow_dispatch: # permite lanzarlo manualmente
 
 jobs:
   build:
     name: Build my project ✨
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       # Checkout
       - name: Checkout repository
@@ -31,8 +31,8 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
-          allowDirtyBuild: true          
-          unityVersion: 6000.2.10f1        # usa ProjectVersion.txt del proyecto
+          allowDirtyBuild: true
+          unityVersion: 6000.2.10f1 # usa ProjectVersion.txt del proyecto
 
       # Output
       - uses: actions/upload-artifact@v4

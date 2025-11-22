@@ -44,9 +44,6 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
             iamge.color = new Color(iamge.color.r, iamge.color.g, iamge.color.b, alpha);
 
             _timeCounter += Time.deltaTime;
-            Debug.Log(_timeCounter);
-            Debug.Log(alpha);
-
         }
     }
 

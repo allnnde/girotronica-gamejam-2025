@@ -48,6 +48,7 @@ public class PlayerMovimentController : MonoBehaviour
 
         // Movimiento hacia adelante
         float forward = input.y;
+        bool isWalking = forward != 0;
 
         // Solo avanza si Y > 0
         Vector3 move = Vector3.zero;
@@ -55,7 +56,8 @@ public class PlayerMovimentController : MonoBehaviour
         {
             move = transform.forward * forward * MoveSpeed;
         }
-        _anim.SetBool("IsWalking", forward > 0);
+        _anim.SetBool("IsWalking", isWalking);
+        _anim.SetBool("IsJumping",  !_characterController.isGrounded);
 
         // --- SALTO ---
         if (_characterController.isGrounded)

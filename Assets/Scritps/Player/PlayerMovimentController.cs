@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Animator))]
 public class PlayerMovimentController : MonoBehaviour
 {
     [field: SerializeField] public float MoveSpeed { set; get; } = 10.0F;
@@ -17,10 +18,12 @@ public class PlayerMovimentController : MonoBehaviour
     private CharacterController _characterController;
     private InputAction _moveAction;
     private InputAction _jumpAction;
+    private Animator _anim;
 
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();
+        _anim = GetComponent<Animator>();
         _moveAction = InputSystem.actions.FindAction("Move");
         _jumpAction = InputSystem.actions.FindAction("Jump");
     }
@@ -52,6 +55,7 @@ public class PlayerMovimentController : MonoBehaviour
         {
             move = transform.forward * forward * MoveSpeed;
         }
+        _anim.SetBool("IsWalking", forward > 0);
 
         // --- SALTO ---
         if (_characterController.isGrounded)

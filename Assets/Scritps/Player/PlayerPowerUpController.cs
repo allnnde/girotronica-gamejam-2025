@@ -18,6 +18,8 @@ public class PlayerPowerUpController : MonoBehaviour
         DIsableAllPowerUps();
 
         _currectPowerUp = this.GetOrAddComponent<ProtectPowerUp>();
+        (_currectPowerUp as Behaviour).enabled = true;
+
     }
 
     private void DIsableAllPowerUps()
@@ -53,9 +55,13 @@ public class PlayerPowerUpController : MonoBehaviour
                 case "SuperArmPowerUp":
                     _currectPowerUp = this.GetOrAddComponent<SuperArmPowerUp>();
                     break;
+                case "SuperFlyPowerUp":
+                    _currectPowerUp = this.GetOrAddComponent<SuperFlyPowerUp>();
+                    break;
                 default:
                     break;
             }
+        (_currectPowerUp as Behaviour).enabled = true;
 
         }
     }

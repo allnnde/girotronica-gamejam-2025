@@ -11,7 +11,7 @@ public class SuperJumpPowerUp : MonoBehaviour, IPowerUp
     {
         var cc = GetComponent<PlayerMovimentController>();
 
-        cc.Move( true, JumpForce);
+        cc.Move(true, JumpForce, cc.GravityForce);
 
     }
 

@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Build my project ✨
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       # Checkout
       - name: Checkout repository
@@ -33,6 +33,7 @@ jobs:
           targetPlatform: StandaloneWindows64
           allowDirtyBuild: true
           unityVersion: 6000.2.10f1 # usa ProjectVersion.txt del proyecto
+          buildMethod: gameci.discover
 
       # Output
       - uses: actions/upload-artifact@v4

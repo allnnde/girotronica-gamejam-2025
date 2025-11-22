@@ -6,11 +6,12 @@ using UnityEngine.InputSystem.XR;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovimentController : MonoBehaviour
 {
-    [field: SerializeField] private float MoveSpeed { set; get; } = 10.0F;
+    [field: SerializeField] public float MoveSpeed { set; get; } = 10.0F;
     [field: SerializeField] public float RotateSpeed { set; get; } = 10.0F;
-    [field: SerializeField] private float GravityForce { set; get; } = -20.0f;
-    [field: SerializeField]  public float JumpForce { set; get; } = 20f;
-    
+    [field: SerializeField] public float GravityForce { set; get; } = -60.0f;
+    [field: SerializeField] public float JumpForce { set; get; } = 20f;
+    [field: SerializeField] public MoveModeEnum MoveMode { get; set; } = MoveModeEnum.Walk;
+
     private float _playerVelocity;
 
     private CharacterController _characterController;
@@ -26,10 +27,12 @@ public class PlayerMovimentController : MonoBehaviour
 
     void Update()
     {
-        Move(_jumpAction.triggered, JumpForce);
+
+        if (MoveMode == MoveModeEnum.Walk)
+            Move(_jumpAction.triggered, JumpForce, GravityForce);
     }
 
-    public void Move(bool jump, float jumpForce)
+    public void Move(bool jump, float jumpForce, float gravityForce)
     {
 
         Vector2 input = _moveAction.ReadValue<Vector2>();
@@ -65,9 +68,18 @@ public class PlayerMovimentController : MonoBehaviour
         }
 
         // --- GRAVEDAD ---
-        _playerVelocity += GravityForce * Time.deltaTime;
+        _playerVelocity += gravityForce * Time.deltaTime;
 
         move.y = _playerVelocity;
         _characterController.Move(move * Time.deltaTime);
+    }
+
+    public void SetMoveMode(MoveModeEnum moveMode)
+    {
+        MoveMode = moveMode;
+    }
+    public bool IsGrounded()
+    {
+        return _characterController.isGrounded;
     }
 }

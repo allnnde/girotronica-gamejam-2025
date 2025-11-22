@@ -34,6 +34,7 @@ jobs:
           allowDirtyBuild: true
           unityVersion: 6000.2.10f1 # usa ProjectVersion.txt del proyecto
           buildMethod: gameci.discover
+          windowsModules: il2cpp
 
       # Output
       - uses: actions/upload-artifact@v4

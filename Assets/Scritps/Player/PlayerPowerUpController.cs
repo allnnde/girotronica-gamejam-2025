@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(ProtectPowerUp))]
 [RequireComponent(typeof(SuperJumpPowerUp))]
 [RequireComponent(typeof(SuperArmPowerUp))]
+[RequireComponent(typeof(SuperFlyPowerUp))]
 public class PlayerPowerUpController : MonoBehaviour
 {
 

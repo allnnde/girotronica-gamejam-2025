@@ -6,5 +6,10 @@ public class Menuuu : MonoBehaviour
     public void iniciar() {
         SceneManager.LoadScene("BedRoomScene_2");
     }
+
+    public void menu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
     public void salir() { Application.Quit(); }
 }

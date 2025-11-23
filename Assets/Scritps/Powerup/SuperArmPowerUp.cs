@@ -6,6 +6,12 @@ public class SuperArmPowerUp : MonoBehaviour, IPowerUp
     [field: SerializeField] public float Distances { get; set; } = 3f;
     [field: SerializeField] public float HitForce { get; set; } = 10f;
     [field: SerializeField] public Vector3 HItVolumen { get; set; } = Vector3.one;
+    private Animator _anim;
+
+    private void Awake()
+    {
+        _anim = GetComponent<Animator>();
+    }
     public void Action()
     {
         var coliders = Physics.BoxCastAll(transform.position, HItVolumen, transform.forward, Quaternion.identity, Distances, HittableMask, QueryTriggerInteraction.Collide);
@@ -16,6 +22,7 @@ public class SuperArmPowerUp : MonoBehaviour, IPowerUp
             var a = Random.insideUnitSphere;
             item.rigidbody.AddForce(HitForce * (transform.forward.normalized + a), ForceMode.Impulse);
         }
+        _anim.SetTrigger("IsAttaking");
     }
     void OnDrawGizmos()
     {

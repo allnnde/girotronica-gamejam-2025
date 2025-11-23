@@ -12,9 +12,10 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
     private PlayerMovimentController cc;
     private Image image;
 
-    [field: SerializeField] public float Dutation { get; set; } = 4F;
+    [field: SerializeField] public float Duration { get; set; } = 4F;
 
     private float _timeCounter { get; set; } = 2F;
+    private Animator _anim;
 
     public void Action()
     {
@@ -24,6 +25,7 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
     private void Awake()
     {
         cc = GetComponent<PlayerMovimentController>();
+        _anim = GetComponent<Animator>();
 
         var ui = GameObject.Find("UI");
         image = ui.transform.Find("ProtectedPanel").GetComponent<Image>();
@@ -32,9 +34,12 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
     private void Update()
     {
         if (cc.MoveMode == MoveModeEnum.Stop)
-        {
-            if (_timeCounter > Dutation)
+        { 
+            _anim.SetBool("IsHidden",true);
+            
+            if (_timeCounter > Duration)
             {
+                _anim.SetBool("IsHidden", false);
                 cc.SetMoveMode(MoveModeEnum.Walk);
                 _timeCounter = 0;
                 return;
@@ -49,9 +54,9 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
 
     public float CalculateAlpha(float t)
     {
-        float rise = Dutation * 0.25f;   // 25% subir
-        float hold = Dutation * 0.50f;   // 50% mantener negro
-        float fall = Dutation * 0.25f;   // 25% bajar
+        float rise = Duration * 0.25f;   // 25% subir
+        float hold = Duration * 0.50f;   // 50% mantener negro
+        float fall = Duration * 0.25f;   // 25% bajar
 
         if (t < rise)
             return Mathf.Lerp(0, 1, t / rise);         // subida

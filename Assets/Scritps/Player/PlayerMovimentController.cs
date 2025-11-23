@@ -12,6 +12,8 @@ public class PlayerMovimentController : MonoBehaviour
     [field: SerializeField] public float GravityForce { set; get; } = -60.0f;
     [field: SerializeField] public float JumpForce { set; get; } = 20f;
     [field: SerializeField] public MoveModeEnum MoveMode { get; set; } = MoveModeEnum.Walk;
+    private bool _isSuperJumping;
+    private bool _isSuperJumpingFinish;
 
     private float _playerVelocity;
 
@@ -32,7 +34,7 @@ public class PlayerMovimentController : MonoBehaviour
     {
 
         _anim.SetBool("IsGrounded", _characterController.isGrounded);
-        if (MoveMode == MoveModeEnum.Walk)
+        if (MoveMode == MoveModeEnum.Walk || _isSuperJumping)
             Move(_jumpAction.triggered, JumpForce, GravityForce);
     }
 
@@ -57,14 +59,22 @@ public class PlayerMovimentController : MonoBehaviour
         {
             move = transform.forward * forward * MoveSpeed;
         }
-        _anim.SetBool("IsWalking", isWalking);
-        _anim.SetBool("IsJumping", !_characterController.isGrounded);
 
-        
+        _anim.SetBool("IsWalking", isWalking);
+        if (_isSuperJumping)
+            _anim.SetBool("IsSuperJumping", _isSuperJumping);
+        else
+            _anim.SetBool("IsJumping", !_characterController.isGrounded);
 
         // --- SALTO ---
         if (_characterController.isGrounded)
         {
+            if (_isSuperJumping && _isSuperJumpingFinish)
+            {
+                _isSuperJumpingFinish = false;
+                _isSuperJumping = false;
+                _anim.SetBool("IsSuperJumping", _isSuperJumping);
+            }
             // Reset de la velocidad vertical
             if (_playerVelocity < 0)
                 _playerVelocity = -2f;
@@ -86,6 +96,14 @@ public class PlayerMovimentController : MonoBehaviour
     public void SetMoveMode(MoveModeEnum moveMode)
     {
         MoveMode = moveMode;
+    }
+    public void ActiveSuperJumping()
+    {
+        _isSuperJumping = true;
+    }
+    public void ActiveSuperJumpingFinish()
+    {
+        _isSuperJumpingFinish = true;
     }
     public bool IsGrounded()
     {

@@ -5,16 +5,26 @@ using UnityEngine;
 
 public class SuperJumpPowerUp : MonoBehaviour, IPowerUp
 {
+    private PlayerMovimentController cc;
+
     [field: SerializeField] public float JumpForce { get; set; } = 100f;
+
+    private void Awake()
+    {
+
+        cc = GetComponent<PlayerMovimentController>();
+    }
 
     public void Action()
     {
-        var cc = GetComponent<PlayerMovimentController>();
-
-        cc.Move(true, JumpForce, cc.GravityForce);
+        cc.ActiveSuperJumping();
 
     }
 
+    internal void SuperJump()
+    {
+        cc.Move(true, JumpForce, cc.GravityForce);
+    }
 }
 
 

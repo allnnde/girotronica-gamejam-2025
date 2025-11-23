@@ -1,4 +1,5 @@
 using System;
+using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,18 +13,22 @@ public class PlayerPowerUpController : MonoBehaviour
 
     private InputAction _attackAction;
     private IPowerUp _currectPowerUp;
+    private Animator _anim;
+    private GameObject _currentPuppet;
+
     void Awake()
     {
         _attackAction = InputSystem.actions.FindAction("Attack");
 
-        DIsableAllPowerUps();
+        DisableAllPowerUps();
+        _anim = GetComponent<Animator>();
 
         _currectPowerUp = this.GetOrAddComponent<ProtectPowerUp>();
         (_currectPowerUp as Behaviour).enabled = true;
 
     }
 
-    private void DIsableAllPowerUps()
+    private void DisableAllPowerUps()
     {
         var powersUps = GetComponents<IPowerUp>();
         foreach (Behaviour item in powersUps)
@@ -37,33 +42,66 @@ public class PlayerPowerUpController : MonoBehaviour
         if (_attackAction.WasPressedThisFrame())
             _currectPowerUp?.Action();
     }
-    private void OnTriggerEnter(Collider other)
+    public void SetCurrectPowerUp<T>(GameObject puppet) where T : UnityEngine.Component
     {
-        if (other.tag.Contains("PowerUp"))
-        {
+        SetCurrectPowerUp<T>();
+        _currentPuppet = puppet;
+        _anim.SetTrigger("IsStich");
 
-            DIsableAllPowerUps();
 
 
-            switch (other.tag)
+
+    }
+
+    private void SetCurrectPowerUp<T>() where T : Component
+    {
+        DisableAllPowerUps();
+        _currectPowerUp = this.GetOrAddComponent<T>() as IPowerUp;
+        Debug.Log(_currectPowerUp);
+        (_currectPowerUp as Behaviour).enabled = true;
+    }
+
+    public void FinishSetCurrectPowerUp() {
+        if (_currentPuppet) {
+
+            var sp = this.transform.parent.GetComponentInChildren<ParticleSystem>();
+            sp.transform.position = this.transform.position;
+            sp.Play();
+
+            switch (_currentPuppet.tag)
             {
                 case "ProtectPowerUp":
-                    _currectPowerUp = this.GetOrAddComponent<ProtectPowerUp>();
+                    ChangeModel<ProtectPowerUp>("Player_Bunny");
                     break;
                 case "SuperJumpPowerUp":
-                    _currectPowerUp = this.GetOrAddComponent<SuperJumpPowerUp>();
+                    ChangeModel<SuperJumpPowerUp>("BunnyFrog_BASE");
                     break;
                 case "SuperArmPowerUp":
-                    _currectPowerUp = this.GetOrAddComponent<SuperArmPowerUp>();
+                    ChangeModel<SuperArmPowerUp>("BunnyBear_BASE");
                     break;
                 case "SuperFlyPowerUp":
-                    _currectPowerUp = this.GetOrAddComponent<SuperFlyPowerUp>();
+                    ChangeModel<SuperFlyPowerUp>("BunnyFrog_BASE");
                     break;
                 default:
                     break;
             }
-        (_currectPowerUp as Behaviour).enabled = true;
 
+
+            _currentPuppet = null;
         }
+    
+    }
+
+    private void ChangeModel<T>(string name) where T : UnityEngine.Component
+    {
+        var model = transform.parent.Find(name).gameObject;
+        model.transform.position = transform.position;
+        model.transform.rotation = transform.rotation;
+        model.SetActive(true);
+        model.GetComponent<PlayerPowerUpController>().SetCurrectPowerUp<T>();
+        var camera = GameObject.Find("CinemachineCamera").GetComponent<CinemachineCamera>();
+        camera.Follow = model.transform;
+
+        this.gameObject.SetActive(false);
     }
 }

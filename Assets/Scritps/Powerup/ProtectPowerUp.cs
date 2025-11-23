@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -29,27 +31,6 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
 
         var ui = GameObject.Find("UI");
         image = ui.transform.Find("ProtectedPanel").GetComponent<Image>();
-    }
-
-    private void Update()
-    {
-        if (cc.MoveMode == MoveModeEnum.Stop)
-        { 
-            _anim.SetBool("IsHidden",true);
-            
-            if (_timeCounter > Duration)
-            {
-                _anim.SetBool("IsHidden", false);
-                cc.SetMoveMode(MoveModeEnum.Walk);
-                _timeCounter = 0;
-                return;
-            }
-            var alpha = CalculateAlpha(_timeCounter);
-
-            image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
-
-            _timeCounter += Time.deltaTime;
-        }
     }
 
     public float CalculateAlpha(float t)

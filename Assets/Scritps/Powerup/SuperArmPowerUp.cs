@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SuperArmPowerUp : MonoBehaviour, IPowerUp
 {
@@ -24,6 +26,7 @@ public class SuperArmPowerUp : MonoBehaviour, IPowerUp
         }
         _anim.SetTrigger("IsAttaking");
     }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

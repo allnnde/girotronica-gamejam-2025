@@ -22,7 +22,7 @@ public class SuperArmPowerUp : MonoBehaviour, IPowerUp
         {
             Debug.Log($"colider  a volaaar {item.collider.name}");
             var a = Random.insideUnitSphere;
-            item.rigidbody.AddForce(HitForce * (transform.forward.normalized + a), ForceMode.Impulse);
+            item.rigidbody.AddForce(HitForce * transform.forward.normalized, ForceMode.Impulse);
         }
         _anim.SetTrigger("IsAttaking");
     }

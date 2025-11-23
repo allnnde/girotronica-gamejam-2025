@@ -33,6 +33,26 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
         image = ui.transform.Find("ProtectedPanel").GetComponent<Image>();
     }
 
+    private void Update()
+    {
+        if (cc.MoveMode == MoveModeEnum.Stop)
+        {
+            _anim.SetBool("IsHidden", true);
+
+            if (_timeCounter > Duration)
+            {
+                _anim.SetBool("IsHidden", false);
+                cc.SetMoveMode(MoveModeEnum.Walk);
+                _timeCounter = 0;
+                return;
+            }
+            var alpha = CalculateAlpha(_timeCounter);
+
+            image.color = new Color(image.color.r, image.color.g, image.color.b, alpha);
+
+            _timeCounter += Time.deltaTime;
+        }
+    }
     public float CalculateAlpha(float t)
     {
         float rise = Duration * 0.25f;   // 25% subir

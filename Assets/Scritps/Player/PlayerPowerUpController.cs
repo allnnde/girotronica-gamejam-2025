@@ -68,6 +68,7 @@ public class PlayerPowerUpController : MonoBehaviour
             sp.transform.position = this.transform.position;
             sp.Play();
 
+
             switch (_currentPuppet.tag)
             {
                 case "ProtectPowerUp":
@@ -75,12 +76,15 @@ public class PlayerPowerUpController : MonoBehaviour
                     break;
                 case "SuperJumpPowerUp":
                     ChangeModel<SuperJumpPowerUp>("BunnyFrog_BASE");
+                    ChangePuppetModel("Frog");
                     break;
                 case "SuperArmPowerUp":
                     ChangeModel<SuperArmPowerUp>("BunnyBear_BASE");
+                    ChangePuppetModel("Bear");
                     break;
                 case "SuperFlyPowerUp":
-                    ChangeModel<SuperFlyPowerUp>("BunnyFrog_BASE");
+                    ChangeModel<SuperFlyPowerUp>("BunnyPenguin_BASE");
+                    ChangePuppetModel("Penguin");
                     break;
                 default:
                     break;
@@ -90,6 +94,15 @@ public class PlayerPowerUpController : MonoBehaviour
             _currentPuppet = null;
         }
     
+    }
+
+    private void ChangePuppetModel(string name)
+    {
+        var idle = _currentPuppet.transform.parent.Find(name +"_Idle");
+        var corpse = _currentPuppet.transform.parent.Find(name + "_Corpse");
+        corpse.gameObject.SetActive(true);
+        idle.gameObject.SetActive(false);
+        _currentPuppet.SetActive(false);
     }
 
     private void ChangeModel<T>(string name) where T : UnityEngine.Component

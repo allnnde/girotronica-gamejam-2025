@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -34,9 +36,9 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
     private void Update()
     {
         if (cc.MoveMode == MoveModeEnum.Stop)
-        { 
-            _anim.SetBool("IsHidden",true);
-            
+        {
+            _anim.SetBool("IsHidden", true);
+
             if (_timeCounter > Duration)
             {
                 _anim.SetBool("IsHidden", false);
@@ -51,7 +53,6 @@ public class ProtectPowerUp : MonoBehaviour, IPowerUp
             _timeCounter += Time.deltaTime;
         }
     }
-
     public float CalculateAlpha(float t)
     {
         float rise = Duration * 0.25f;   // 25% subir

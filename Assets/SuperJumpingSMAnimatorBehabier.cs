@@ -14,9 +14,7 @@ public class SuperJumpingSMAnimatorBehabier : StateMachineBehaviour
         var frime = stateInfo.normalizedTime % 1F;
         if (stateInfo.IsName("Bunny_Jump"))
         {
-
-
-            if (frime > .5)
+            if (frime > .8)
             {
                 var SuperJumpPowerUp = GameObject.FindGameObjectWithTag("Player").GetComponent<SuperJumpPowerUp>();
                 SuperJumpPowerUp.SuperJump();
@@ -24,7 +22,7 @@ public class SuperJumpingSMAnimatorBehabier : StateMachineBehaviour
         }
         if (stateInfo.IsName("Bunny_Land 0"))
         {
-            if (frime > .5)
+            if (frime > .3)
             {
 
                 var PlayerMovimentController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovimentController>();
